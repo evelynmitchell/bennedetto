@@ -1,7 +1,12 @@
-import locale
+try:
+    from urlparse import urljoin
+except ImportError:
+    from urllib.parse import urljoin
 
-locale.setlocale( locale.LC_ALL, '' )
+from django.conf import settings
 
 
-def display_money(decimal):
-    return locale.currency(decimal, grouping=True)
+def expand_url_path(path, domain=None):
+    domain = domain or settings.DOMAIN
+    url = urljoin('//{}'.format(domain), path)
+    return url[2:]

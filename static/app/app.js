@@ -7,21 +7,35 @@
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
         $routeProvider
-            .when('/', {
-                templateUrl: '{}app/partials/today.html'.format(APP_SETTINGS.staticUrl),
-                controller: 'TodayController',
+            .when('/track', {
+                templateUrl: '{}app/partials/track.html'.format(APP_SETTINGS.staticUrl),
+                controller: 'TrackController',
                 controllerAs: 'ctrl'
             })
-
-            .when('/rates', {
-                templateUrl: '{}app/partials/rates.html'.format(APP_SETTINGS.staticUrl),
-                controller: 'RatesController',
+            .when('/explore', {
+                templateUrl: '{}app/partials/explore.html'.format(APP_SETTINGS.staticUrl),
+                controller: 'ExploreController',
                 controllerAs: 'ctrl'
+            })
+            .when('/profile', {
+                templateUrl: '{}app/partials/profile.html'.format(APP_SETTINGS.staticUrl),
+                controller: 'ProfileController',
+                controllerAs: 'ctrl',
+                resolve: {
+                    user: function(UserResourceFactory) {
+                        return UserResourceFactory.buildUserProfile().then(function(d) {
+                            return d.data;
+                        });
+                    }
+                }
+            })
+            .otherwise({
+                redirectTo: '/track'
             });
     }
 
     angular
-        .module('bennedetto', ['ngRoute', 'ngResource', 'ngMessages', 'ui.bootstrap'])
+        .module('bennedetto', ['ngRoute', 'ngResource', 'ngMessages', 'ngMaterial', 'chart.js'])
         .config(['$routeProvider', '$resourceProvider', '$httpProvider', 'APP_SETTINGS', config]);
 
 }());

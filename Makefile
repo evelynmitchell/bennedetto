@@ -1,14 +1,14 @@
 manage = python manage.py
 install = pip install
 
-createsuperuser:
+docker:
+	docker build .
+superuser:
 	${manage} createsuperuser
 install-dev:
 	${install} -r requirements/dev.txt
-install-js:
-	npm install
-build-js:
-	grunt
+install-prod:
+	${install} -r requirements/prod.txt
 migrate:
 	${manage} migrate
 run:
@@ -16,7 +16,4 @@ run:
 shell:
 	${manage} shell
 test:
-	grunt test
 	${manage} test
-dev-bootstrap: install-dev migrate install-js build-js createsuperuser
-dev-bootstrap-headless: install-dev migrate install-js build-js
